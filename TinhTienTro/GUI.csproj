@@ -56,6 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\ClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\ClientForm.Designer.cs">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\ElectricityWaterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,12 @@
     <Compile Include="Form\HomeForm.Designer.cs">
       <DependentUpon>HomeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Form\RoomForm.cs">
@@ -88,6 +100,15 @@
     <Compile Include="Form\UserForm.Designer.cs">
       <DependentUpon>UserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="QRForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QRForm.Designer.cs">
+      <DependentUpon>QRForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form\ClientForm.resx">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\ElectricityWaterForm.resx">
       <DependentUpon>ElectricityWaterForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -111,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\UserForm.resx">
       <DependentUpon>UserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QRForm.resx">
+      <DependentUpon>QRForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -135,6 +162,9 @@
       <Project>{290e9c5a-881b-47dd-843e-94e080e7135c}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\img.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

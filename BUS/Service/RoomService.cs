@@ -1,9 +1,7 @@
 ﻿using DAL;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 public class RoomService
 {
     private readonly DBContext _context;
@@ -13,23 +11,40 @@ public class RoomService
         _context = context;
     }
 
+    public IEnumerable<RoomDTO> GetAll()
+    {
+        var rooms = _context.Rooms.ToList();
+        return rooms.Select(room => ConvertToDTO(room)).ToList();
+    }
     public RoomDTO GetById(int id)
     {
-        // Lấy dữ liệu từ cơ sở dữ liệu
         var room = _context.Rooms.Find(id);
-        // Chuyển đổi dữ liệu sau khi truy xuất
         return room == null ? null : ConvertToDTO(room);
     }
 
-    public IEnumerable<RoomDTO> GetAll()
+    public void AddRoom(RoomDTO roomDTO)
     {
-        // Lấy dữ liệu từ cơ sở dữ liệu
-        var rooms = _context.Rooms.ToList();
-        // Chuyển đổi dữ liệu sau khi truy xuất
-        return rooms.Select(room => ConvertToDTO(room)).ToList();
+        var room = new Room
+        {
+            RoomNumber = roomDTO.RoomNumber,
+            RoomPrice = roomDTO.RoomPrice,
+            TenantID = roomDTO.TenantID
+        };
+        _context.Rooms.Add(room);
+        _context.SaveChanges();
     }
 
-    public void Update(RoomDTO roomDTO)
+    public void DeleteRoom(int roomId)
+    {
+        var room = _context.Rooms.Find(roomId);
+        if (room != null)
+        {
+            _context.Rooms.Remove(room);
+            _context.SaveChanges();
+        }
+    }
+
+    public void UpdateRoom(RoomDTO roomDTO)
     {
         var existingRoom = _context.Rooms.Find(roomDTO.RoomID);
         if (existingRoom != null)
@@ -37,8 +52,21 @@ public class RoomService
             existingRoom.RoomNumber = roomDTO.RoomNumber;
             existingRoom.RoomPrice = roomDTO.RoomPrice;
             existingRoom.TenantID = roomDTO.TenantID;
+
+            // Đánh dấu đối tượng là "Modified"
+            _context.Entry(existingRoom).State = System.Data.Entity.EntityState.Modified;
+
             _context.SaveChanges();
         }
+    }
+
+    public IEnumerable<UserDTO> GetAllTenants()
+    {
+        return _context.Users.Select(user => new UserDTO
+        {
+            UserID = user.UserID,
+            FullName = user.FullName
+        }).ToList();
     }
 
     private RoomDTO ConvertToDTO(Room room)

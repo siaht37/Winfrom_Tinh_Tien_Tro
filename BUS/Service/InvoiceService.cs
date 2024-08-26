@@ -45,6 +45,23 @@ public class InvoiceService
             _context.SaveChanges();
         }
     }
+    public void Add(InvoiceDTO invoiceDTO)
+    {
+        var invoice = new Invoice
+        {
+            RoomID = invoiceDTO.RoomID,
+            Month = invoiceDTO.Month,
+            ElectricityCharge = invoiceDTO.ElectricityCharge,
+            WaterCharge = invoiceDTO.WaterCharge,
+            RoomCharge = invoiceDTO.RoomCharge,
+            TotalAmount = invoiceDTO.TotalAmount,
+            Status = invoiceDTO.Status
+        };
+
+        _context.Invoices.Add(invoice);
+        _context.SaveChanges();
+    }
+
 
     private InvoiceDTO ConvertToDTO(Invoice invoice)
     {

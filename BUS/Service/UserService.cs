@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 public class UserService
 {
     private readonly DBContext _context;
@@ -16,21 +15,32 @@ public class UserService
 
     public UserDTO GetById(int id)
     {
-        // Lấy dữ liệu từ cơ sở dữ liệu
         var user = _context.Users.Find(id);
-        // Chuyển đổi dữ liệu sau khi truy xuất
         return user == null ? null : ConvertToDTO(user);
     }
 
     public IEnumerable<UserDTO> GetAll()
     {
-        // Lấy dữ liệu từ cơ sở dữ liệu
         var users = _context.Users.ToList();
-        // Chuyển đổi dữ liệu sau khi truy xuất
         return users.Select(user => ConvertToDTO(user)).ToList();
     }
 
-    public void Update(UserDTO userDTO)
+    public void AddUser(UserDTO userDTO)
+    {
+        var user = new User
+        {
+            Username = userDTO.Username,
+            PasswordHash = "defaultHash", // Tùy chỉnh việc hash password
+            Role = userDTO.Role,
+            FullName = userDTO.FullName,
+            PhoneNumber = userDTO.PhoneNumber,
+            Email = userDTO.Email
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+    }
+
+    public void UpdateUser(UserDTO userDTO)
     {
         var existingUser = _context.Users.Find(userDTO.UserID);
         if (existingUser != null)
@@ -44,6 +54,22 @@ public class UserService
         }
     }
 
+    public void DeleteUser(int userId)
+    {
+        var user = _context.Users.Find(userId);
+        if (user != null)
+        {
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+        }
+    }
+    public UserDTO Authenticate(string username, string password)
+    {
+        var user = _context.Users
+            .SingleOrDefault(u => u.Username == username && u.PasswordHash == password);
+
+        return user == null ? null : ConvertToDTO(user);
+    }
     private UserDTO ConvertToDTO(User user)
     {
         return new UserDTO

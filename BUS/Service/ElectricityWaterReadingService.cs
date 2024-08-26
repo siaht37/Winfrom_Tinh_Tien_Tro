@@ -26,6 +26,22 @@ public class ElectricityWaterReadingService
         return readings.Select(reading => ConvertToDTO(reading)).ToList();
     }
 
+    public void Add(ElectricityWaterReadingDTO readingDTO)
+    {
+        var reading = new ElectricityWaterReading
+        {
+            RoomID = readingDTO.RoomID,
+            Month = readingDTO.Month,
+            ElectricityUsage = readingDTO.ElectricityUsage,
+            WaterUsage = readingDTO.WaterUsage,
+            ElectricityUnitPrice = readingDTO.ElectricityUnitPrice,
+            WaterUnitPrice = readingDTO.WaterUnitPrice
+        };
+
+        _context.ElectricityWaterReadings.Add(reading);
+        _context.SaveChanges();
+    }
+
     public void Update(ElectricityWaterReadingDTO readingDTO)
     {
         var existingReading = _context.ElectricityWaterReadings.Find(readingDTO.ReadingID);
